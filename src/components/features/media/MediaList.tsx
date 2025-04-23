@@ -9,7 +9,8 @@ import { PlusCircle, X } from 'lucide-react'
 import { createMedia, deleteMedia } from '@/app/actions'
 import type { MediaRecord } from '@/generated/prisma'
 import type { MediaRecordData } from '@/lib/types/media'
-import { MEDIA_TYPES } from '@/lib/constants/media'
+import { MediaType } from '@/lib/constants/media'
+import { CreateMediaRecordInput } from '@/dal/media'
 
 type MediaListProps = {
   initialMediaRecords: MediaRecord[]
@@ -19,7 +20,7 @@ type MediaListProps = {
 const convertToMediaRecordData = (record: MediaRecord): MediaRecordData => {
   return {
     ...record,
-    mediaType: record.mediaType as any // 一時的な型アサーションで対応
+    mediaType: record.mediaType as MediaType
   }
 }
 
@@ -36,7 +37,7 @@ export function MediaList({ initialMediaRecords }: MediaListProps) {
     setIsFormOpen(false)
   }, [])
 
-  const handleCreateMedia = useCallback(async (data: any) => {
+  const handleCreateMedia = useCallback(async (data: CreateMediaRecordInput) => {
     const result = await createMedia(data)
     if (result.success) {
       // 新しいデータを取得するためにページをリロード

@@ -3,7 +3,7 @@
 import { useMemo, useState, memo } from 'react'
 import { cn } from '@/lib/utils'
 import { Star } from 'lucide-react'
-import { RATING_MAX, RATING_MIN } from '@/lib/constants/media'
+import { RATING_MAX } from '@/lib/constants/media'
 
 type StarRatingProps = {
   defaultValue?: number

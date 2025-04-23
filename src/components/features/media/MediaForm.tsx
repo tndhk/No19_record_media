@@ -8,7 +8,6 @@ import { RadioGroup } from '@/components/common/forms/RadioGroup'
 import { StarRating } from '@/components/common/forms/StarRating'
 import { MEDIA_TYPE_OPTIONS } from '@/lib/constants/media'
 import type { CreateMediaRecordInput } from '@/dal/media'
-import type { ValidationError } from '@/lib/utils/validation/media'
 
 type MediaFormProps = {
   onSubmit: (data: CreateMediaRecordInput) => Promise<void>
