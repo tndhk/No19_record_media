@@ -7,10 +7,11 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
-// 開発環境ではSQLite、本番環境ではPostgreSQLを使用
+// 環境変数DATABASE_PROVIDERに基づいてデータベースを選択
+// 指定がなければSQLiteを使用、PostgreSQLの場合はDATABASE_URLが必要
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = env("DATABASE_PROVIDER")
+  url      = env("DATABASE_URL")
 }
 
 // メディア情報モデル

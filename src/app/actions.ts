@@ -8,9 +8,9 @@ import { cookies } from 'next/headers'
 
 const USER_ID_COOKIE = 'user_id'
 
-// サーバーサイドで認証情報を取得
-function getServerAuth() {
-  const cookieStore = cookies()
+// サーバーサイドで認証情報を取得（非同期処理に変更）
+async function getServerAuth() {
+  const cookieStore = await cookies()
   const userId = cookieStore.get(USER_ID_COOKIE)?.value
 
   return {
@@ -21,7 +21,7 @@ function getServerAuth() {
 
 export async function createMedia(formData: Omit<CreateMediaRecordInput, 'userId'>) {
   // ユーザー認証チェック
-  const { userId } = getServerAuth()
+  const { userId } = await getServerAuth()
   if (!userId) {
     return { 
       success: false, 
@@ -56,7 +56,7 @@ export async function createMedia(formData: Omit<CreateMediaRecordInput, 'userId
 
 export async function deleteMedia(id: number) {
   // ユーザー認証チェック
-  const { userId } = getServerAuth()
+  const { userId } = await getServerAuth()
   if (!userId) {
     return { 
       success: false, 
@@ -90,7 +90,7 @@ export async function deleteMedia(id: number) {
 
 // サインイン処理
 export async function handleSignIn(userId: string) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore.set(USER_ID_COOKIE, userId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -104,7 +104,7 @@ export async function handleSignIn(userId: string) {
 
 // サインアウト処理
 export async function handleSignOut() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore.delete(USER_ID_COOKIE)
   
   revalidatePath('/')

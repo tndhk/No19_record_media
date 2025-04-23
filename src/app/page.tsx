@@ -5,8 +5,8 @@ import { Button } from '@/components/common/buttons/Button'
 import Link from 'next/link'
 
 export default async function Home() {
-  // Cookieからユーザー情報を取得
-  const cookieStore = cookies()
+  // Cookieからユーザー情報を取得（await追加）
+  const cookieStore = await cookies()
   const userId = cookieStore.get('user_id')?.value
   
   // ユーザーIDに紐づくメディアの一覧を取得

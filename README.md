@@ -1,4 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# メディア記録アプリ
+
+本、映画、ドラマなどのメディアを記録・管理できるアプリケーションです。
+
+## 機能
+
+- ユーザー認証（シンプルなIDベース）
+- メディア記録の作成・閲覧・削除
+- 個人ごとのデータ管理
+
+## 技術スタック
+
+- Next.js
+- TypeScript
+- Prisma ORM
+- Tailwind CSS
+- SQLite（開発環境）/ PostgreSQL（本番環境）
+
+## 開発環境のセットアップ
+
+```bash
+# リポジトリのクローン
+git clone <repository-url>
+cd record_media
+
+# 依存パッケージのインストール
+npm install
+
+# 環境変数の設定
+cp .env.example .env.local
+
+# データベースのマイグレーション
+npx prisma migrate dev
+
+# 開発サーバーの起動
+npm run dev
+```
+
+## Vercelへのデプロイ
+
+### 環境変数の設定
+
+Vercelのプロジェクト設定で以下の環境変数を設定してください：
+
+- `DATABASE_PROVIDER`: `postgresql`
+- `DATABASE_URL`: PostgreSQLデータベースの接続URL
+
+### デプロイコマンド
+
+```bash
+vercel
+```
+
+または、GitHubリポジトリをVercelと連携して自動デプロイを設定することもできます。
+
+### データベースのセットアップ
+
+1. Vercel Postgresを使用する場合：
+   - Vercelダッシュボードから新しいPostgresデータベースを作成
+   - 作成されたデータベースの接続情報を環境変数に設定
+
+2. 外部PostgreSQLを使用する場合：
+   - 接続URLを`DATABASE_URL`環境変数に設定
+
+### マイグレーションの実行
+
+デプロイ後、以下のコマンドを実行してデータベースにマイグレーションを適用します：
+
+```bash
+vercel run npx prisma migrate deploy
+```
+
+## 注意事項
+
+- 認証システムはシンプルなIDベースで、本番環境での使用は推奨されません
+- 必要に応じて、Clerk, Auth0などの強固な認証システムへの移行を検討してください
 
 ## Getting Started
 
