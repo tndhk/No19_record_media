@@ -1,15 +1,14 @@
-import { PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '@/generated/prisma'
 
-// PrismaClientのグローバルインスタンス
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient | undefined
+declare global {
+  var prisma: PrismaClient | undefined
 }
 
-// 開発環境での複数インスタンス生成を防ぐ
+// PrismaClientは開発中にホットリロードで複数のインスタンスが作成されるのを防ぐ
 export const prisma =
-  globalForPrisma.prisma ??
+  global.prisma ||
   new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma 
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma 
