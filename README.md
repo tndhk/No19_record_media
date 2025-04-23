@@ -42,8 +42,29 @@ npm run dev
 
 Vercelのプロジェクト設定で以下の環境変数を設定してください：
 
-- `DATABASE_PROVIDER`: `postgresql`
 - `DATABASE_URL`: PostgreSQLデータベースの接続URL
+
+### Prismaの設定
+
+Vercelでデプロイする前に、本番環境用のPrismaスキーマを用意する必要があります：
+
+1. Prismaスキーマをコピーして修正
+```bash
+cp prisma/schema.prisma prisma/schema.production.prisma
+```
+
+2. `schema.production.prisma`ファイルを編集し、プロバイダーをPostgreSQLに変更
+```
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+3. ビルドコマンドを設定
+```
+"buildCommand": "cp prisma/schema.production.prisma prisma/schema.prisma && prisma generate && next build"
+```
 
 ### デプロイコマンド
 

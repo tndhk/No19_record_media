@@ -156,13 +156,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:./dev.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\n// 開発環境ではSQLite、本番環境ではPostgreSQLを使用\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（Clerk認証システムのユーザーID）\n  userId String\n}\n",
-  "inlineSchemaHash": "d3b6a40c6b9e53f132aaa0e42dccfb25bf71760c91df18152d9c4bf0043f68fb",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\n// ローカル開発ではSQLite、本番環境ではPostgreSQLを使用\n// providetはenv()で指定できないため、開発環境のプロバイダーを指定\n// 本番環境ではvercel.jsonやビルド設定でプロバイダー変更\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（Clerk認証システムのユーザーID）\n  userId String\n}\n",
+  "inlineSchemaHash": "ae34fd29ff8ca3c5cec3199bbe98acf0f1109b7bd36198fcebf6b095b6587e0b",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -173,7 +173,9 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
