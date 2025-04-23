@@ -121,7 +121,8 @@ exports.Prisma.MediaRecordScalarFieldEnum = {
   mediaType: 'mediaType',
   title: 'title',
   rating: 'rating',
-  comment: 'comment'
+  comment: 'comment',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {

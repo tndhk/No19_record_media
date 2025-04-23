@@ -2,12 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["driverAdapters"]
 }
 
+// 開発環境ではSQLite、本番環境ではPostgreSQLを使用
 datasource db {
-  provider = "sqlite"
+  provider = "sqlite" // ローカルはSQLiteを使用
   url      = env("DATABASE_URL")
 }
 
@@ -28,4 +30,7 @@ model MediaRecord {
 
   // 一言コメント（任意）
   comment String?
+
+  // ユーザーID（ClerkのユーザーIDを保存）
+  userId String
 }

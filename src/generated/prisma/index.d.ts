@@ -758,6 +758,10 @@ export namespace Prisma {
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
+     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     */
+    adapter?: runtime.SqlDriverAdapterFactory | null
+    /**
      * Global configuration for omitting model fields by default.
      * 
      * @example
@@ -899,6 +903,7 @@ export namespace Prisma {
     title: string | null
     rating: number | null
     comment: string | null
+    userId: string | null
   }
 
   export type MediaRecordMaxAggregateOutputType = {
@@ -909,6 +914,7 @@ export namespace Prisma {
     title: string | null
     rating: number | null
     comment: string | null
+    userId: string | null
   }
 
   export type MediaRecordCountAggregateOutputType = {
@@ -919,6 +925,7 @@ export namespace Prisma {
     title: number
     rating: number
     comment: number
+    userId: number
     _all: number
   }
 
@@ -941,6 +948,7 @@ export namespace Prisma {
     title?: true
     rating?: true
     comment?: true
+    userId?: true
   }
 
   export type MediaRecordMaxAggregateInputType = {
@@ -951,6 +959,7 @@ export namespace Prisma {
     title?: true
     rating?: true
     comment?: true
+    userId?: true
   }
 
   export type MediaRecordCountAggregateInputType = {
@@ -961,6 +970,7 @@ export namespace Prisma {
     title?: true
     rating?: true
     comment?: true
+    userId?: true
     _all?: true
   }
 
@@ -1058,6 +1068,7 @@ export namespace Prisma {
     title: string
     rating: number
     comment: string | null
+    userId: string
     _count: MediaRecordCountAggregateOutputType | null
     _avg: MediaRecordAvgAggregateOutputType | null
     _sum: MediaRecordSumAggregateOutputType | null
@@ -1087,6 +1098,7 @@ export namespace Prisma {
     title?: boolean
     rating?: boolean
     comment?: boolean
+    userId?: boolean
   }, ExtArgs["result"]["mediaRecord"]>
 
   export type MediaRecordSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1097,6 +1109,7 @@ export namespace Prisma {
     title?: boolean
     rating?: boolean
     comment?: boolean
+    userId?: boolean
   }, ExtArgs["result"]["mediaRecord"]>
 
   export type MediaRecordSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1107,6 +1120,7 @@ export namespace Prisma {
     title?: boolean
     rating?: boolean
     comment?: boolean
+    userId?: boolean
   }, ExtArgs["result"]["mediaRecord"]>
 
   export type MediaRecordSelectScalar = {
@@ -1117,9 +1131,10 @@ export namespace Prisma {
     title?: boolean
     rating?: boolean
     comment?: boolean
+    userId?: boolean
   }
 
-  export type MediaRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "mediaType" | "title" | "rating" | "comment", ExtArgs["result"]["mediaRecord"]>
+  export type MediaRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "mediaType" | "title" | "rating" | "comment" | "userId", ExtArgs["result"]["mediaRecord"]>
 
   export type $MediaRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MediaRecord"
@@ -1132,6 +1147,7 @@ export namespace Prisma {
       title: string
       rating: number
       comment: string | null
+      userId: string
     }, ExtArgs["result"]["mediaRecord"]>
     composites: {}
   }
@@ -1562,6 +1578,7 @@ export namespace Prisma {
     readonly title: FieldRef<"MediaRecord", 'String'>
     readonly rating: FieldRef<"MediaRecord", 'Int'>
     readonly comment: FieldRef<"MediaRecord", 'String'>
+    readonly userId: FieldRef<"MediaRecord", 'String'>
   }
     
 
@@ -1944,7 +1961,8 @@ export namespace Prisma {
     mediaType: 'mediaType',
     title: 'title',
     rating: 'rating',
-    comment: 'comment'
+    comment: 'comment',
+    userId: 'userId'
   };
 
   export type MediaRecordScalarFieldEnum = (typeof MediaRecordScalarFieldEnum)[keyof typeof MediaRecordScalarFieldEnum]
@@ -2013,6 +2031,7 @@ export namespace Prisma {
     title?: StringFilter<"MediaRecord"> | string
     rating?: IntFilter<"MediaRecord"> | number
     comment?: StringNullableFilter<"MediaRecord"> | string | null
+    userId?: StringFilter<"MediaRecord"> | string
   }
 
   export type MediaRecordOrderByWithRelationInput = {
@@ -2023,6 +2042,7 @@ export namespace Prisma {
     title?: SortOrder
     rating?: SortOrder
     comment?: SortOrderInput | SortOrder
+    userId?: SortOrder
   }
 
   export type MediaRecordWhereUniqueInput = Prisma.AtLeast<{
@@ -2036,6 +2056,7 @@ export namespace Prisma {
     title?: StringFilter<"MediaRecord"> | string
     rating?: IntFilter<"MediaRecord"> | number
     comment?: StringNullableFilter<"MediaRecord"> | string | null
+    userId?: StringFilter<"MediaRecord"> | string
   }, "id">
 
   export type MediaRecordOrderByWithAggregationInput = {
@@ -2046,6 +2067,7 @@ export namespace Prisma {
     title?: SortOrder
     rating?: SortOrder
     comment?: SortOrderInput | SortOrder
+    userId?: SortOrder
     _count?: MediaRecordCountOrderByAggregateInput
     _avg?: MediaRecordAvgOrderByAggregateInput
     _max?: MediaRecordMaxOrderByAggregateInput
@@ -2064,6 +2086,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"MediaRecord"> | string
     rating?: IntWithAggregatesFilter<"MediaRecord"> | number
     comment?: StringNullableWithAggregatesFilter<"MediaRecord"> | string | null
+    userId?: StringWithAggregatesFilter<"MediaRecord"> | string
   }
 
   export type MediaRecordCreateInput = {
@@ -2073,6 +2096,7 @@ export namespace Prisma {
     title: string
     rating: number
     comment?: string | null
+    userId: string
   }
 
   export type MediaRecordUncheckedCreateInput = {
@@ -2083,6 +2107,7 @@ export namespace Prisma {
     title: string
     rating: number
     comment?: string | null
+    userId: string
   }
 
   export type MediaRecordUpdateInput = {
@@ -2092,6 +2117,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaRecordUncheckedUpdateInput = {
@@ -2102,6 +2128,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaRecordCreateManyInput = {
@@ -2112,6 +2139,7 @@ export namespace Prisma {
     title: string
     rating: number
     comment?: string | null
+    userId: string
   }
 
   export type MediaRecordUpdateManyMutationInput = {
@@ -2121,6 +2149,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaRecordUncheckedUpdateManyInput = {
@@ -2131,6 +2160,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -2196,6 +2226,7 @@ export namespace Prisma {
     title?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
+    userId?: SortOrder
   }
 
   export type MediaRecordAvgOrderByAggregateInput = {
@@ -2211,6 +2242,7 @@ export namespace Prisma {
     title?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
+    userId?: SortOrder
   }
 
   export type MediaRecordMinOrderByAggregateInput = {
@@ -2221,6 +2253,7 @@ export namespace Prisma {
     title?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
+    userId?: SortOrder
   }
 
   export type MediaRecordSumOrderByAggregateInput = {
