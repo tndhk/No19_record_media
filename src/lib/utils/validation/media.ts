@@ -1,4 +1,4 @@
-import { MEDIA_TYPES, RATING_MAX, RATING_MIN } from '@/lib/constants/media'
+import { MEDIA_TYPES, RATING_MAX, RATING_MIN, MediaType } from '@/lib/constants/media'
 import type { CreateMediaRecordInput } from '@/dal/media'
 
 export type ValidationError = {
@@ -17,7 +17,7 @@ export function validateMediaRecord(data: Partial<CreateMediaRecordInput>): Vali
   // メディアタイプのバリデーション
   if (!data.mediaType) {
     errors.push({ field: 'mediaType', message: 'メディアタイプは必須です' })
-  } else if (!Object.values(MEDIA_TYPES).includes(data.mediaType as any)) {
+  } else if (!Object.values(MEDIA_TYPES).includes(data.mediaType as MediaType)) {
     errors.push({ field: 'mediaType', message: '無効なメディアタイプです' })
   }
 
