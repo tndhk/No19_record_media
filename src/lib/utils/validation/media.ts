@@ -31,5 +31,10 @@ export function validateMediaRecord(data: Partial<CreateMediaRecordInput>): Vali
     })
   }
 
+  // ユーザーIDのバリデーション
+  if (!data.userId) {
+    errors.push({ field: 'userId', message: 'ユーザーIDが必要です' })
+  }
+
   return errors
 } 

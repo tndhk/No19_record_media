@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layouts/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,7 @@ export default function RootLayout({
     <html lang="ja" suppressHydrationWarning>
       <body className={inter.className}>
         <div className="min-h-screen flex flex-col">
-          <header className="border-b">
-            <div className="container mx-auto p-4">
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl font-bold">メディアログ</h1>
-              </div>
-            </div>
-          </header>
+          <Header />
           <main className="flex-1 container mx-auto p-4 md:p-6">
             {children}
           </main>
