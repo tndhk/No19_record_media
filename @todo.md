@@ -98,4 +98,53 @@
 
 - [ ] 🟢 UI/UXの改善
   - アニメーションの追加検討
-  - ユーザーフィードバックの強化 
+  - ユーザーフィードバックの強化
+
+- [~] 🔴 本番用データベースを準備
+  - SupabaseやPostgreSQL環境を用意する
+  - `DATABASE_URL`で接続情報を渡す
+  - 依存関係: なし
+  - 見積時間: 1.5h
+
+- [ ] 🟡 Prisma設定の切り替え
+  - `prisma/schema.prisma`の`datasource url`を環境変数化
+  - `.gitignore`に`dev.db`を追加
+  - `package.json`に`postinstall: "prisma migrate deploy"`を追記
+  - 依存関係: 本番用DBの準備
+  - 見積時間: 1h
+
+- [x] 🟡 環境変数の管理
+  - `.env.production`を作成し本番用設定を記述
+  - Vercelダッシュボードに`DATABASE_URL`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`等を登録
+  - 依存関係: Prisma設定の切り替え
+  - 見積時間: 0.5h
+
+- [x] 🟡 Clerk認証設定
+  - 環境変数でリダイレクトURL(`NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`等)を設定
+  - 必要に応じてWebhookエンドポイント(`/api/webhooks/clerk`)を準備
+  - 依存関係: 環境変数の管理
+  - 見積時間: 0.5h
+
+- [~] 🟢 Vercelプロジェクトの作成とGitHub連携
+  - `rollback-before-login`ブランチをVercelに登録
+  - ビルドコマンド: `npm run build` / 出力ディレクトリ: `.next`
+  - 依存関係: Clerk認証設定
+  - 見積時間: 0.5h
+
+- [ ] 🟢 ビルド設定とデプロイ検証
+  - プレビュー環境で動作確認（サインイン・メディア投稿・一覧表示）
+  - Prisma Migrateのログをチェック
+  - 依存関係: Vercelプロジェクトの作成
+  - 見積時間: 1h
+
+- [ ] ⚪ カスタムドメイン設定（任意）
+  - 独自ドメインのDNS設定（CNAME/Aレコード）
+  - SSL証明書の有効化
+  - 依存関係: ビルド設定とデプロイ検証
+  - 見積時間: 0.5h
+
+- [ ] ⚪ モニタリングとアラート導入
+  - Vercelのデプロイ通知設定
+  - Sentryなどエラートラッキングの導入検討
+  - 依存関係: ビルド設定とデプロイ検証
+  - 見積時間: 1h 
