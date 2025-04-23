@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { PlusCircle } from 'lucide-react'
 import { Button } from '@/components/common/buttons/Button'
 
@@ -7,7 +8,7 @@ type EmptyStateProps = {
   onClick: () => void
 }
 
-export function EmptyState({ onClick }: EmptyStateProps) {
+const EmptyStateComponent = ({ onClick }: EmptyStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center gap-6 min-h-[50vh]">
       <div className="space-y-3">
@@ -25,4 +26,7 @@ export function EmptyState({ onClick }: EmptyStateProps) {
       </Button>
     </div>
   )
-} 
+}
+
+// memoでコンポーネントをラップして不要な再レンダリングを防止
+export const EmptyState = memo(EmptyStateComponent) 

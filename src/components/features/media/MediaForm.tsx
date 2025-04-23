@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useCallback, memo } from 'react'
 import { Input } from '@/components/common/forms/Input'
 import { Textarea } from '@/components/common/forms/Textarea'
 import { Button } from '@/components/common/buttons/Button'
@@ -15,7 +15,7 @@ type MediaFormProps = {
   onCancel: () => void
 }
 
-export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
+const MediaFormComponent = ({ onSubmit, onCancel }: MediaFormProps) => {
   const [isPending, startTransition] = useTransition()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState<CreateMediaRecordInput>({
@@ -25,7 +25,8 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
     comment: ''
   })
 
-  const handleChange = (
+  // フィールド変更ハンドラをメモ化
+  const handleChange = useCallback((
     field: keyof CreateMediaRecordInput,
     value: string | number
   ) => {
@@ -39,9 +40,10 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
         return newErrors
       })
     }
-  }
+  }, [errors])
 
-  const validate = (): boolean => {
+  // バリデーション関数をメモ化
+  const validate = useCallback((): boolean => {
     const newErrors: Record<string, string> = {}
 
     if (!formData.title.trim()) {
@@ -58,9 +60,10 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }
+  }, [formData])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // フォーム送信ハンドラをメモ化
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
 
     if (!validate()) return
@@ -72,7 +75,27 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
         console.error('保存中にエラーが発生しました:', error)
       }
     })
-  }
+  }, [formData, onSubmit, validate])
+
+  // メディアタイプ変更ハンドラ
+  const handleMediaTypeChange = useCallback((value: string) => {
+    handleChange('mediaType', value)
+  }, [handleChange])
+
+  // タイトル変更ハンドラ
+  const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange('title', e.target.value)
+  }, [handleChange])
+
+  // 評価変更ハンドラ
+  const handleRatingChange = useCallback((rating: number) => {
+    handleChange('rating', rating)
+  }, [handleChange])
+
+  // コメント変更ハンドラ
+  const handleCommentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    handleChange('comment', e.target.value)
+  }, [handleChange])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -84,7 +107,7 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
           <RadioGroup
             name="mediaType"
             options={MEDIA_TYPE_OPTIONS}
-            onChange={(value) => handleChange('mediaType', value)}
+            onChange={handleMediaTypeChange}
             error={errors.mediaType}
           />
         </div>
@@ -97,7 +120,7 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
             id="title"
             placeholder="タイトルを入力"
             value={formData.title}
-            onChange={(e) => handleChange('title', e.target.value)}
+            onChange={handleTitleChange}
             error={errors.title}
           />
         </div>
@@ -107,7 +130,7 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
             評価
           </label>
           <StarRating
-            onChange={(rating) => handleChange('rating', rating)}
+            onChange={handleRatingChange}
             error={errors.rating}
           />
         </div>
@@ -120,7 +143,7 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
             id="comment"
             placeholder="コメントを入力"
             value={formData.comment || ''}
-            onChange={(e) => handleChange('comment', e.target.value)}
+            onChange={handleCommentChange}
           />
         </div>
       </div>
@@ -135,4 +158,7 @@ export function MediaForm({ onSubmit, onCancel }: MediaFormProps) {
       </div>
     </form>
   )
-} 
+}
+
+// memoでコンポーネントをラップして不要な再レンダリングを防止
+export const MediaForm = memo(MediaFormComponent) 
