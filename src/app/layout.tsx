@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layouts/Header";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,22 +16,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" suppressHydrationWarning>
-      <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1 container mx-auto p-4 md:p-6">
-            {children}
-          </main>
-          <footer className="border-t py-4">
-            <div className="container mx-auto p-4">
-              <p className="text-sm text-center text-muted-foreground">
-                © {new Date().getFullYear()} メディアログ
-              </p>
-            </div>
-          </footer>
-        </div>
-      </body>
-    </html>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
+      <html lang="ja" suppressHydrationWarning>
+        <body className={inter.className}>
+          <div className="min-h-screen flex flex-col">
+            <header className="border-b">
+              <div className="container mx-auto p-4 flex justify-between items-center">
+                <h1 className="text-xl font-bold">メディアログ</h1>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            </header>
+            <main className="flex-1 container mx-auto p-4 md:p-6">
+              {children}
+            </main>
+            <footer className="border-t py-4">
+              <div className="container mx-auto p-4">
+                <p className="text-sm text-center text-muted-foreground">
+                  © {new Date().getFullYear()} メディアログ
+                </p>
+              </div>
+            </footer>
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -1,20 +1,25 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-// 認証処理はServer ComponentとServer Actionsで行います 
+// 公開ルート（認証不要）
+const isPublicRoute = createRouteMatcher([
+  // '/', // ホームページも保護する場合はコメントアウト
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/webhooks/clerk', // Clerk Webhook用（後で作成）
+]);
 
-// 簡易的なミドルウェア実装
-export function middleware(request: NextRequest) {
-  // ここで認証チェックなどを行うことができますが、
-  // 今回はServer ComponentとServer Actionsで認証を処理するため、
-  // パスの変更なしでリクエストを続行させます
-  return NextResponse.next()
-}
+export default clerkMiddleware(async (auth, req) => {
+  // サインイン状態とサインインリダイレクト関数を取得
+  const { userId, redirectToSignIn } = await auth();
 
-// 必要に応じて適用するパスを指定（省略可能）
+  // 認証されていないユーザーが公開ルート以外にアクセスした場合、サインインページにリダイレクト
+  if (!isPublicRoute(req) && !userId) {
+    return redirectToSignIn();
+  }
+});
+
 export const config = {
-  matcher: [
-    // 認証が必要なパスを指定する場合
-    // '/((?!api|_next/static|_next/image|favicon.ico|sign-in).*)'
-  ],
-} 
+  // ミドルウェアを適用するルートを指定
+  // 静的ファイル (_next/static, _next/image, favicon.ico) を除外
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+}; 

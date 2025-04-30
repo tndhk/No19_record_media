@@ -7,11 +7,9 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
-// ローカル開発ではSQLite、本番環境ではPostgreSQLを使用
-// providetはenv()で指定できないため、開発環境のプロバイダーを指定
-// 本番環境ではvercel.jsonやビルド設定でプロバイダー変更
+// 本番環境ではPostgreSQL、ローカルもPostgreSQL(URLは.env.localで制御)
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -32,7 +30,7 @@ model MediaRecord {
 
   // 一言コメント（任意）
   comment   String?
-  
-  // ユーザーID（Clerk認証システムのユーザーID）
+
+  // ユーザーID（ClerkのユーザーIDを保存）
   userId    String
 }

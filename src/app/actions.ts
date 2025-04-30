@@ -4,46 +4,30 @@ import { revalidatePath } from 'next/cache'
 import { createMediaRecord, deleteMediaRecord } from '@/dal/media'
 import type { CreateMediaRecordInput } from '@/dal/media'
 import { validateMediaRecord } from '@/lib/utils/validation/media'
-import { cookies } from 'next/headers'
-
-const USER_ID_COOKIE = 'user_id'
-
-// サーバーサイドで認証情報を取得（非同期処理に変更）
-async function getServerAuth() {
-  const cookieStore = await cookies()
-  const userId = cookieStore.get(USER_ID_COOKIE)?.value
-
-  return {
-    userId: userId || null,
-    isSignedIn: !!userId
-  }
-}
+import { auth } from '@clerk/nextjs/server'
 
 export async function createMedia(formData: Omit<CreateMediaRecordInput, 'userId'>) {
-  // ユーザー認証チェック
-  const { userId } = await getServerAuth()
+  const { userId } = await auth()
+
   if (!userId) {
-    return { 
-      success: false, 
-      errors: [{ field: 'auth', message: '認証が必要です' }] 
-    }
+    return { success: false, errors: [{ field: 'auth', message: '認証が必要です。ログインしてください。' }] }
   }
 
-  const dataWithUserId = { ...formData, userId }
-
-  // バリデーション
-  const errors = validateMediaRecord(dataWithUserId)
+  // バリデーション用データにuserIdを追加
+  const dataToValidate = { ...formData, userId }
+  const errors = validateMediaRecord(dataToValidate)
   if (errors.length > 0) {
     return { success: false, errors }
   }
 
   try {
-    // データベースに保存
-    await createMediaRecord(dataWithUserId)
-    
-    // キャッシュをクリア
+    // データベースに保存 (userIdを含むデータを渡す)
+    const newRecord = await createMediaRecord(dataToValidate)
+    if (!newRecord) {
+      throw new Error('データベースへの保存に失敗しました。')
+    }
+
     revalidatePath('/')
-    
     return { success: true }
   } catch (error) {
     console.error('メディア作成エラー:', error)
@@ -55,29 +39,26 @@ export async function createMedia(formData: Omit<CreateMediaRecordInput, 'userId
 }
 
 export async function deleteMedia(id: number) {
-  // ユーザー認証チェック
-  const { userId } = await getServerAuth()
+  const { userId } = await auth()
+
   if (!userId) {
-    return { 
-      success: false, 
-      message: '認証が必要です' 
-    }
+    // 未認証ユーザーによる削除リクエストは明確に失敗させる
+    return { success: false, message: '認証が必要です。ログインしてください。' }
   }
 
   try {
-    // データベースから削除 (ユーザーIDを含めて所有権チェック)
+    // データベースから削除 (userIdを渡して所有権を確認)
     const result = await deleteMediaRecord(id, userId)
-    
-    if (!result) {
+
+    // deleteMediaRecordがnullを返す場合 (存在しない or 権限なし)
+    if (!result || result.count === 0) {
       return {
         success: false,
-        message: 'メディア情報の削除権限がないか、既に削除されています'
+        message: '削除対象のレコードが見つからないか、削除する権限がありません。'
       }
     }
-    
-    // キャッシュをクリア
+
     revalidatePath('/')
-    
     return { success: true }
   } catch (error) {
     console.error('メディア削除エラー:', error)

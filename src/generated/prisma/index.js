@@ -158,12 +158,12 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "file:./prisma/dev.db"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\n// ローカル開発ではSQLite、本番環境ではPostgreSQLを使用\n// providetはenv()で指定できないため、開発環境のプロバイダーを指定\n// 本番環境ではvercel.jsonやビルド設定でプロバイダー変更\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（Clerk認証システムのユーザーID）\n  userId String\n}\n",
-  "inlineSchemaHash": "ae34fd29ff8ca3c5cec3199bbe98acf0f1109b7bd36198fcebf6b095b6587e0b",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\n// 開発環境ではSQLite、本番環境ではPostgreSQLを使用\ndatasource db {\n  provider = \"sqlite\" // ローカルはSQLiteを使用\n  url      = env(\"DATABASE_URL\")\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（ClerkのユーザーIDを保存）\n  userId String\n}\n",
+  "inlineSchemaHash": "6ca8e615bd7e2fab29f9aec05b4733964fe1abf869aa0e0411bd1f040bfd6d73",
   "copyEngine": true
 }
 
