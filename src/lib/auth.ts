@@ -36,7 +36,7 @@ export function signOut() {
 export function requireAuth() {
   const { userId } = auth()
   if (!userId) {
-    redirect('/sign-in')
+    redirect('/login')
   }
   return userId
 }

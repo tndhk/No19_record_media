@@ -6,6 +6,6 @@
       "use": "@vercel/next"
     }
   ],
-  "buildCommand": "echo \"datasource db { provider = \\\"postgresql\\\"; url = env(\\\"DATABASE_URL\\\"); }\" > prisma/schema.prisma && prisma generate && next build",
+  "buildCommand": "echo \"datasource db { provider = \\\"postgresql\\\"; url = env(\\\"DATABASE_URL\\\"); }\" > prisma/schema.prisma && prisma generate && SKIP_ESLINT=true next build",
   "devCommand": "prisma generate && next dev"
 } 

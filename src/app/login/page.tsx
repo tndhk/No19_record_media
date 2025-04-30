@@ -1,6 +1,6 @@
 import { SignInForm } from '@/components/features/auth/SignInForm'
 
-export default function SignInPage() {
+export default function LoginPage() {
   return (
     <div className="container mx-auto max-w-md py-16">
       <div className="rounded-lg border shadow-sm p-8">

@@ -31,7 +31,7 @@ export default async function Home() {
         <div className="text-center py-12">
           <p>メディアを記録・管理するにはログインしてください。</p>
           <Button asChild className="mt-4">
-            <Link href="/sign-in">ログイン / 新規登録</Link>
+            <Link href="/login">ログイン / 新規登録</Link>
           </Button>
         </div>
       )}
