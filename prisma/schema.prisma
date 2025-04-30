@@ -1,36 +1,24 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/generated/prisma"
   previewFeatures = ["driverAdapters"]
 }
 
-// 本番環境ではPostgreSQL、ローカルもPostgreSQL(URLは.env.localで制御)
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// メディア情報モデル
-model MediaRecord {
+model TemperatureHistory {
   id        Int      @id @default(autoincrement())
+  date      DateTime @unique
+  tempHigh  Float
+  tempLow   Float
+  tempAvg   Float
+  tempAvg7  Float
+  source    String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 
-  // メディアタイプ（Book, Movie, Drama）
-  mediaType String
-
-  // タイトル
-  title     String
-
-  // 評価（1~5の星）
-  rating    Int
-
-  // 一言コメント（任意）
-  comment   String?
-
-  // ユーザーID（ClerkのユーザーIDを保存）
-  userId    String
+  @@index([date])
 }
