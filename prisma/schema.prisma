@@ -9,16 +9,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TemperatureHistory {
+// メディア情報モデル
+model MediaRecord {
   id        Int      @id @default(autoincrement())
-  date      DateTime @unique
-  tempHigh  Float
-  tempLow   Float
-  tempAvg   Float
-  tempAvg7  Float
-  source    String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 
-  @@index([date])
+  // メディアタイプ（Book, Movie, Drama）
+  mediaType String
+
+  // タイトル
+  title String
+
+  // 評価（1~5の星）
+  rating Int
+
+  // 一言コメント（任意）
+  comment String?
+
+  // ユーザーID（ClerkのユーザーIDを保存）
+  userId String
 }
