@@ -4,6 +4,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 const isPublicRoute = createRouteMatcher([
   // '/', // ホームページも保護する場合はコメントアウト
   '/login(.*)',
+  '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks/clerk', // Clerk Webhook用（後で作成）
 ]);

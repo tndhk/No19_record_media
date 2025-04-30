@@ -15,8 +15,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 環境変数がない場合はダミーの値を使用
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_dummy-key";
+  
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="ja" suppressHydrationWarning>
         <body className={inter.className}>
           <div className="min-h-screen flex flex-col">
