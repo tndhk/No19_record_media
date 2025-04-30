@@ -6,7 +6,7 @@
       "use": "@vercel/next"
     }
   ],
-  "buildCommand": "echo \"datasource db { provider = \\\"postgresql\\\"; url = env(\\\"DATABASE_URL\\\"); }\" > prisma/schema.prisma && prisma generate && prisma migrate deploy && SKIP_ESLINT=true next build",
+  "buildCommand": "prisma generate && prisma migrate deploy && SKIP_ESLINT=true next build",
   "devCommand": "prisma generate && next dev",
   "installCommand": "npm install"
 } 

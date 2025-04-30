@@ -1,3 +1,6 @@
+-- DropTable (SQLiteからの既存のテーブルがあれば削除)
+DROP TABLE IF EXISTS "MediaRecord";
+
 -- CreateTable
 CREATE TABLE "MediaRecord" (
   "id" SERIAL NOT NULL,
@@ -10,7 +13,4 @@ CREATE TABLE "MediaRecord" (
   "userId" TEXT NOT NULL,
   
   CONSTRAINT "MediaRecord_pkey" PRIMARY KEY ("id")
-);
-
--- DropTableIfExists
-DROP TABLE IF EXISTS "TemperatureHistory"; 
+); 
