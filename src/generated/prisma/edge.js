@@ -83,6 +83,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -100,6 +103,11 @@ exports.Prisma.MediaRecordScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -122,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/takahikotsunoda/Dev/record_media/src/generated/prisma",
+      "value": "/vercel/sandbox/primary/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -131,19 +139,18 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "rhel-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [
       "driverAdapters"
     ],
-    "sourceFilePath": "/Users/takahikotsunoda/Dev/record_media/prisma/schema.prisma",
+    "sourceFilePath": "/vercel/sandbox/primary/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.6.0",
@@ -151,18 +158,18 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
   "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "file:./prisma/dev.db"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\n// 開発環境ではSQLite、本番環境ではPostgreSQLを使用\ndatasource db {\n  provider = \"sqlite\" // ローカルはSQLiteを使用\n  url      = env(\"DATABASE_URL\")\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（ClerkのユーザーIDを保存）\n  userId String\n}\n",
-  "inlineSchemaHash": "6ca8e615bd7e2fab29f9aec05b4733964fe1abf869aa0e0411bd1f040bfd6d73",
+  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"driverAdapters\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// メディア情報モデル\nmodel MediaRecord {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // メディアタイプ（Book, Movie, Drama）\n  mediaType String\n\n  // タイトル\n  title String\n\n  // 評価（1~5の星）\n  rating Int\n\n  // 一言コメント（任意）\n  comment String?\n\n  // ユーザーID（ClerkのユーザーIDを保存）\n  userId String\n}\n",
+  "inlineSchemaHash": "dca4a450b84bc72938ddf47c3fe42e401c2fdb25322193caf6525cdeab77c9e2",
   "copyEngine": true
 }
 config.dirname = '/'
